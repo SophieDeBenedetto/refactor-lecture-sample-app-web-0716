@@ -44,7 +44,7 @@ RSpec.describe WebhooksController, :type => :controller do
         expect(email.subject).to eq("an issue has been updated on GitHub") 
       end
 
-      it "sends a text message to the use whoe issue has been created/updated" do 
+      it "sends a text message to the user who issue has been created/updated" do 
         post :receive, @payload
         text_message = open_last_text_message_for(@user.phone_number)
         expect(text_message.body).to eq("test issue 2 has been updated. View it here: https://github.com/SophieDeBenedetto/learn-write/issues/5")

@@ -7,6 +7,7 @@ class IssuesController < ApplicationController
   def show
     @issue = Issue.find(params[:id])
     if @issue.user == current_user
+      @repo = RepositoryDecorator.new(@issue.repository)
       render :show
     else
       redirect_to root_path, notice: "you can only view your own issues!"

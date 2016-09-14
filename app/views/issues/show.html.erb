@@ -3,7 +3,7 @@
      <h3 class="panel-title"><%=@issue.title%></h3>
   </div>
   <div class="panel-body">
-    <p><strong>repo:</strong> <%=@issue.repository.name.gsub("-", " ").titleize%></p>
+    <p><strong>repo:</strong> <%=@repo.display_name%></p>
     <p><strong>assignee:</strong> <%=@issue.assignee || 'n/a'%></p>
     <p><strong>opened at:</strong> <%=@issue.opened_on%></p>
     <p><strong>opened by:</strong> <%=@issue.opened_by%></p>
