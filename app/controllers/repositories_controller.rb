@@ -19,7 +19,6 @@ class RepositoriesController < ApplicationController
     repo_name = params[:repository][:url].split("/")[-1]
     @repo = Repository.new(name: repo_name, url: params[:repository][:url], user: current_user)
     if @repo.save
-      gh_repo = @client.repo("#{repo_owner}/#{repo_name}")
       @client.issues("#{repo_owner}/#{repo_name}").each do |issue|
         Issue.create(url: issue.html_url, opened_by: issue.user.login, status: issue.state, title: issue.title, content: issue.body, opened_on: issue.created_at, assignee: issue.assignee, repository: @repo)
       end
@@ -34,4 +33,3 @@ class RepositoriesController < ApplicationController
     end
   end
 end
-

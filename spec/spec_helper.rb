@@ -1,12 +1,10 @@
-require 'capybara/rspec'
+# require 'capybara/rspec'
 require 'omniauth'
 require 'rails_helper'
-require 'capybara/rspec'
 require 'webmock/rspec'
 
 require_relative './support/vcr_setup.rb'
-# require_relative './support/capybara_setup.rb'
-# require_relative './support/billy_setup.rb'
+
 
 OmniAuth.config.test_mode = true
 OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
@@ -28,7 +26,7 @@ RSpec.configure do |config|
 
     mocks.verify_partial_doubles = true
   end
-  config.before(:each) { ActionMailer::Base.deliveries.clear }      
+  config.before(:each) { ActionMailer::Base.deliveries.clear }
 
   SmsSpec.driver = :"twilio-ruby"
   Capybara.javascript_driver = :webkit
@@ -115,4 +113,3 @@ def sign_in
   visit '/'
   click_link('log in')
 end
-
