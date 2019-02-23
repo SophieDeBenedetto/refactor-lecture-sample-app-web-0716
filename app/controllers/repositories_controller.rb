@@ -14,18 +14,22 @@ class RepositoriesController < ApplicationController
   end
 
   def create
-    @client ||= Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
-    repo_owner = params[:repository][:url].split("/")[-2]
-    repo_name = params[:repository][:url].split("/")[-1]
-    @repo = Repository.new(name: repo_name, url: params[:repository][:url], user: current_user)
+    # def get_repo_name_from_url(params)
+    #   @repo_name= params[:repository][:url].split("/")[-1]
+    # end
+    #
+    # def get_repo_owner_from_url(params)
+    #   params[:repository][:url].split("/")[-2]
+    # end
+    #
+    # Repo.create(name: repo_name)
+    # repo_owner = params[:repository][:url].split("/")[-2]
+    # repo_name = params[:repository][:url].split("/")[-1]
+    # @repo = Repository.new(name: repo_name, url: params[:repository][:url], user: current_user)
+    @repo = RepositoryCreationService.create_repo(params)
     if @repo.save
-      @client.issues("#{repo_owner}/#{repo_name}").each do |issue|
-        Issue.create(url: issue.html_url, opened_by: issue.user.login, status: issue.state, title: issue.title, content: issue.body, opened_on: issue.created_at, assignee: issue.assignee, repository: @repo)
-      end
-      @client.create_hook("#{repo_owner}/#{repo_name}",
-        'web',
-        {url: "#{ENV['ISSUE_TRACKR_APP_URL']}/webhooks/receive", content_type: 'json'},
-        {events: ['issues'], active: true})
+      GithubAdapter.get_issues_for(@repo)
+      GithubAdapter.create_webhook_for(@repo)
     end
     respond_to do |f|
       f.js
