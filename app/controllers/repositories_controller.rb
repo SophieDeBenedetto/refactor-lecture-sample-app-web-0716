@@ -14,19 +14,9 @@ class RepositoriesController < ApplicationController
   end
 
   def create
-    # def get_repo_name_from_url(params)
-    #   @repo_name= params[:repository][:url].split("/")[-1]
-    # end
-    #
-    # def get_repo_owner_from_url(params)
-    #   params[:repository][:url].split("/")[-2]
-    # end
-    #
-    # Repo.create(name: repo_name)
-    # repo_owner = params[:repository][:url].split("/")[-2]
-    # repo_name = params[:repository][:url].split("/")[-1]
-    # @repo = Repository.new(name: repo_name, url: params[:repository][:url], user: current_user)
-    @repo = RepositoryCreationService.create_repo(params)
+    repo_owner = params[:repository][:url].split("/")[-2]
+    repo_name = params[:repository][:url].split("/")[-1]
+    @repo = Repository.new(name: repo_name, url: params[:repository][:url], user: current_user)
     if @repo.save
       GithubAdapter.get_issues_for(@repo)
       GithubAdapter.create_webhook_for(@repo)

@@ -5,4 +5,8 @@ class Repository < ActiveRecord::Base
   include ActiveModel::Validations
   validates_with RepositoryValidator
   validates :url, uniqueness: true, presence: true, format: {with: /https:\/\/github.com/, message: "must be a valid github url"}
+
+  def owner
+    user
+  end
 end
