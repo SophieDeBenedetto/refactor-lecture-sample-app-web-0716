@@ -20,9 +20,9 @@ class WebhooksController < ApplicationController
       if owner.phone_number
         @client = Twilio::REST::Client.new(ENV['TWILIO_SID'], ENV['TWILIO_TOKEN'])
         @client.messages.create(
-          to: owner.phone_number, 
+          to: owner.phone_number,
           from: "+1 #{ENV['TWILIO_NUMBER']}",
-           body: "#{issue.title} has been updated. View it here: #{issue.url}")
+          body: "#{issue.title} has been updated. View it here: #{issue.url}")
       end
       UserMailer.issue_update_email(issue.user, issue).deliver_now
       head :no_content

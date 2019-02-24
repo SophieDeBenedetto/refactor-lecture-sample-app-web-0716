@@ -30,8 +30,7 @@ gem 'omniauth-github'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'puma'
-# gem 'dotenv'
-gem 'figaro'
+gem 'dotenv-rails', groups: [:development, :test]
 gem 'twilio-ruby'
 
 group :production do
